@@ -1,0 +1,205 @@
+<div class="container" id="main">
+
+    <h3 id="top-title"> Template Conditional in angular html </h3>
+
+    <!-- if-else statement -->
+    <h5> if-else </h5>
+    @if(card.type === 'gold') {
+        <span> Gold </span>
+    } @else if(card.type === 'silver') {
+            <span> Silver </span>
+    } @else if(card.type === 'platinum') {
+            <span> Platinum </span>
+    }
+    
+    <br/>
+    <br/>
+
+    <!-- but what we can do we can use swtich inside of if-else ladder -->
+    <h5> switch-case </h5>
+    @switch(card.type) {
+        @case ('gold') {
+            <span> Gold </span>
+        }
+        @case ('silver') {
+            <span> Silver </span>
+        }
+        @case ('platinum') {
+            <span> Platinum </span>
+        }
+        @default {
+            <span class="badge-default"> -- </span>     
+        }
+    }
+
+    <br/>
+    <br/>
+    
+    <h5> for loop demo </h5>
+    <!-- for loop -->
+    <!-- track item will increase the rendering speed -->
+    @for(item of cardList; track item) {
+
+        <div id="card-view" class="card" style="width: 18rem;">
+            <div class="card-body">
+              <h5 class="card-title">{{item.name}}</h5>
+              <p class="card-text">{{item.number}}</p>
+              <a href="#" class="btn btn-primary">{{item.type}}</a>
+            </div>
+        </div>
+
+     } @empty { 
+        <p> snap bruh! this array is empty </p>
+     }
+  
+
+     <br/>
+     <br/>
+     <br/>
+
+    <h3> Property Binding </h3>
+     <button type="button" [disabled]="isDisabled" > Submit </button>
+
+     <br/>
+     <br/>
+     <br/>
+
+     <h3> Input and Output </h3>
+     <button type="button" (click)="sendDataToAnotherComponent()" > Submit </button>
+
+     
+     <br/>
+     <br/>
+     <h3> Event Binding/Handling </h3>
+     <button type="button" [disabled]="isEnabled" (click)="handleClick()"> Submit </button>
+ 
+     <br/>
+     <br/>
+     <h3> Customizing Components with Input </h3>
+     <!-- this is event input that means we are getting data in user-card-view component -->
+     <app-user-card-view [userCardData]="card"/>
+ 
+     <br/>
+     <br/>
+     <h3> Forms </h3>
+     <p> So Basically there are two types of forms 1. Template Driven Forms 2. Reactive Forms </p>
+
+     <p> 1. Template Driven Forms </p>
+     <p> Quick to setup and use. </p>
+     <p>Best for small one-time use forms</p>
+     <p>Requries more configuration for testing</p>
+
+     <div id="card-view" class="card" style="width: 18rem;">
+        <div class="card-body">
+          
+            <form name="loginForm">
+                <label for="username">Username:</label>
+                <!-- requried FormsModule  -->
+                <!-- binding directly to the property -->
+                <input type="text" name="username" [(ngModel)]="username">
+
+                <label for="username">Username:</label>
+                <!-- requried FormsModule  -->
+                <!-- binding directly to the property -->
+                <input type="password" name="password" [(ngModel)]="password">
+
+            </form>
+
+            <br/>
+ 
+            Username : {{username}}  <br/>
+            Password : {{password}}
+
+        </div>
+     </div>
+
+     <p> 2. Reactive Forms </p>
+     <p>Support Typing</p>
+     <p>Resuable, can share Models</p>
+     <p>More Robusts testing configuration</p>
+
+     <div id="card-view" class="card" style="width: 18rem;">
+        <div class="card-body">
+          
+            <!-- directly binding to the model -->
+            <form [formGroup]="loginForm" (ngSubmit)="handleSubmit()">
+                <label for="username">Username:</label>
+                <!-- requried FormsModule  --> 
+                <input type="text" formControlName="username">
+
+                <label for="username">Username:</label>
+                <!-- requried FormsModule  --> 
+                <input type="password" formControlName="password">
+                <br/>
+                <button class="btn-primary" type="submit"> Submit </button>
+
+            </form>
+
+            <br/>
+ 
+            Username : {{username}}  <br/>
+            Password : {{password}}
+
+        </div>
+     </div>
+     
+     <br/>
+     <br/>
+     <h2> Performance </h2> 
+     <h4> Reactive Primitives </h4>
+     <p> So in angular we don't manager the state like we do in react js like you already seen
+        how we write and it's just udpate the UI. Angular uses something called ZONE to detect
+        changes but we also have other options as well and we're going to check them out.</p>
+
+        <p> 1. Signal 2. Computed 3. Effect </p>
+
+        <p>1. Signal</p>
+        <p> A value that can tell angular when it changes. capable of notifying its context 
+            of future changes in it values </p>
+
+            <p> firstName : {{firstName()}} </p>
+            <p> lastName : {{lastName()}} </p>
+
+            <p> 2. Computed </p>
+            <p> Derive new values when one of the dependent Signal changes </p>
+            <p> Note : let you change the values based on others values like we 
+                change something using signal based on that change we can change something else as well. </p>
+
+                <p> name : {{fullName()}} </p>
+
+             <p> 3. Effect </p>   
+             <p> An effect is a side-effectUI operation which reads the values of zero or more signals </p>
+             <p> Note : we can chagne something if the a signal changes </p>
+
+
+             <br/>
+             <br/>
+             <br/>
+        
+            <h3> Deferrable Views </h3>
+            <p> Lazy loading helps keep inital bundle sizes smaller means ( e.g. if user facing internet issue no ship this view / part ) </p>
+
+             <button #trigger > Load More </button> 
+
+             <br/>
+
+             @defer (on interaction(trigger)) {
+                <p> component loaded </p>
+             } @loading {
+                <p> Please Wait While We're getting data. </p>
+             } @error {
+                <p> Opps! something went wrong </p>
+             } @placeholder {
+                <p> placeholder </p>
+             }
+
+             <button (click)="counter = counter-1" > Make it Zero : {{counter}} </button>
+  
+             @defer (when counter == 0) {
+                <p> oi oi oi oi component loaded </p>
+             } @placeholder {
+                <p> imma placeholder bruh. </p>
+             }
+
+</div>
+

@@ -1,0 +1,13 @@
+#top-title {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+#card-view {
+    display: inline-flex;
+    margin: 10px;
+}
+
+#main {
+    padding-bottom: 50px;
+}
